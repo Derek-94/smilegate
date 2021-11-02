@@ -10,7 +10,7 @@ import 'semantic-ui-css/semantic.min.css';
 const Navigation = () => {
   return (
     <NavigationWrapper>
-      <TestSection />
+      <LogoBackground />
       <SmilegateLogo src={stove_logo} alt="logo" />
       <ProfileWrapper>
         <Image size="mini" src={mascot_05} circular />
@@ -30,7 +30,7 @@ const NavigationWrapper = styled.header`
   height: 96px;
 `;
 
-const TestSection = styled.div`
+const LogoBackground = styled.div`
   width: 97px;
   height: 96px;
   background: url(https://www.smilegate.com/ko/images/common/companyPatten.png);
@@ -40,9 +40,9 @@ const TestSection = styled.div`
 `;
 
 const SmilegateLogo = styled.img`
-  width: 200px;
+  width: auto;
   height: auto;
-  margin: 15px 0 0 20px;
+  margin: 25px 0 0 30px;
 `;
 
 const ProfileWrapper = styled.section`
