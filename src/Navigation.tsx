@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Icon, Image } from 'semantic-ui-react';
+import { Icon, Image, Divider } from 'semantic-ui-react';
 
 import stove_logo from './logo/stove_logo.png';
 import mascot_05 from './logo/mascot_05.jpg';
@@ -9,15 +9,18 @@ import 'semantic-ui-css/semantic.min.css';
 
 const Navigation = () => {
   return (
-    <NavigationWrapper>
-      <LogoBackground />
-      <SmilegateLogo src={stove_logo} alt="logo" />
-      <ProfileWrapper>
-        <Image size="mini" src={mascot_05} circular />
-        <Icon size="big" name="pencil square" />
-        <Icon size="big" name="settings" />
-      </ProfileWrapper>
-    </NavigationWrapper>
+    <>
+      <NavigationWrapper>
+        <LogoBackground />
+        <SmilegateLogo src={stove_logo} alt="logo" />
+        <ProfileWrapper>
+          <ProfileImg size="mini" src={mascot_05} circular />
+          <PencilIcon size="big" name="pencil square" />
+          <SettingIcon size="big" name="settings" />
+        </ProfileWrapper>
+      </NavigationWrapper>
+      <Divider />
+    </>
   );
 };
 
@@ -51,4 +54,22 @@ const ProfileWrapper = styled.section`
   width: 200px;
   height: auto;
   align-items: center;
+`;
+
+const ProfileImg = styled(Image)`
+  &: hover {
+    cursor: pointer;
+  }
+`;
+
+const PencilIcon = styled(Icon)`
+  &: hover {
+    cursor: pointer;
+  }
+`;
+
+const SettingIcon = styled(Icon)`
+  &: hover {
+    cursor: pointer;
+  }
 `;
