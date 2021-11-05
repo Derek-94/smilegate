@@ -67,7 +67,7 @@ const ArticleCreate: FunctionComponent = () => {
         ]),
       );
     }
-    history.push(`/list:${newId}`);
+    history.push(`/list?${newId}`);
   };
 
   return (
