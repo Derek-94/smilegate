@@ -17,7 +17,7 @@ const ArticleList: FunctionComponent = () => {
         <Header.Content>Articles</Header.Content>
       </Header>
       {DummyData.map(data => (
-        <Message onDismiss={onRemove} style={{ margin: '1rem 0' }}>
+        <Message key={data.id} onDismiss={onRemove} style={{ margin: '1rem 0' }}>
           <ArticleLink to={'list:' + data.id}>
             <Message.Header>{data.title}</Message.Header>
             <p>{data.content}</p>

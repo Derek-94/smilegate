@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import Modals from './utils/Modals';
 import styled from 'styled-components';
 
 import { Icon, Image, Divider } from 'semantic-ui-react';
@@ -14,9 +17,19 @@ const Navigation = () => {
         <LogoBackground />
         <SmilegateLogo src={stove_logo} alt="logo" />
         <ProfileWrapper>
-          <ProfileImg size="mini" src={mascot_05} circular />
-          <PencilIcon size="big" name="pencil square" />
-          <SettingIcon size="big" name="settings" />
+          <Modals
+            children={<ProfileImg size="mini" src={mascot_05} circular />}
+            content="사용자 정보"
+            modalHeader="프로필을 조회합니다!"
+          />
+          <ArticleWriteLink to="/write">
+            <PencilIcon size="big" name="pencil square" />
+          </ArticleWriteLink>
+          <Modals
+            children={<SettingIcon size="big" name="settings" />}
+            content="환경 설정"
+            modalHeader="환경 설정을 수정합니다!"
+          />
         </ProfileWrapper>
       </NavigationWrapper>
       <Divider />
@@ -59,6 +72,13 @@ const ProfileWrapper = styled.section`
 const ProfileImg = styled(Image)`
   &: hover {
     cursor: pointer;
+  }
+`;
+
+const ArticleWriteLink = styled(Link)`
+  color: black;
+  &: hover {
+    color: black;
   }
 `;
 
