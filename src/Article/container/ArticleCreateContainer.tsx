@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import ArticleCreate from '../presenter/ArticleCreate';
 
-const ArticleCreateContainer = () => {
+const ArticleCreateContainer: FunctionComponent = () => {
   return <ArticleCreate />;
 };
 

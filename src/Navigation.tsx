@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import Modals from './utils/Modals';
@@ -10,7 +10,7 @@ import stove_logo from './logo/stove_logo.png';
 import mascot_05 from './logo/mascot_05.jpg';
 import 'semantic-ui-css/semantic.min.css';
 
-const Navigation = () => {
+const Navigation: FunctionComponent = () => {
   return (
     <>
       <NavigationWrapper>
