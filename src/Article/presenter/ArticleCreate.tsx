@@ -1,5 +1,8 @@
 import React, { FunctionComponent, useState, useRef } from 'react';
 
+import { DummyData as articleList } from '../../data/';
+
+import { v4 as uuidv4 } from 'uuid';
 import { Input, Button } from 'semantic-ui-react';
 
 import Prism from 'prismjs';
@@ -9,16 +12,18 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 
 const ArticleCreate: FunctionComponent = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const history = useHistory();
   const editorRef = useRef<Editor>(null);
 
   const onChangeTitle: React.ChangeEventHandler<HTMLInputElement> = e => {
     setTitle(e.target.value);
-    console.log(title);
   };
 
   const onChangeContent = () => {
@@ -30,11 +35,39 @@ const ArticleCreate: FunctionComponent = () => {
   };
 
   const onCancelPosting: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log('canceling...');
+    history.goBack();
   };
 
   const onPostArticle: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log(title, content);
+    const newId = uuidv4();
+    const articles = localStorage.getItem('smileGate');
+    if (articles === null) {
+      localStorage.setItem(
+        'smileGate',
+        JSON.stringify([
+          ...articleList,
+          {
+            id: uuidv4(),
+            title: title,
+            content: content,
+          },
+        ]),
+      );
+    } else {
+      const addedResult = JSON.parse(articles);
+      localStorage.setItem(
+        'smileGate',
+        JSON.stringify([
+          ...addedResult,
+          {
+            id: newId,
+            title: title,
+            content: content,
+          },
+        ]),
+      );
+    }
+    history.push(`/list:${newId}`);
   };
 
   return (
