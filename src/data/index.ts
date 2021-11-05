@@ -1,6 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const DummyData = [
+export interface ArticleInfo {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export const DummyData: ArticleInfo[] = [
   {
     id: uuidv4(),
     title: 'Test Artcle 1',
