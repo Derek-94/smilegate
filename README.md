@@ -3,7 +3,7 @@
 
 ### 배포주소
 
-👉 
+👉 https://smilegate-derek-blog.netlify.app/
 
 ### 시연 영상
 
