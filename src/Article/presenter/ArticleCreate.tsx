@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useRef } from 'react';
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
 
 import { DummyData as articleList } from '../../data/';
 
@@ -14,12 +14,14 @@ import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 
 import styled from 'styled-components';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
 const ArticleCreate: FunctionComponent = () => {
+  const history = useHistory();
+  const location = useLocation<{ id: string; title: string; content: string }>();
+
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const history = useHistory();
   const editorRef = useRef<Editor>(null);
 
   const onChangeTitle: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -41,34 +43,58 @@ const ArticleCreate: FunctionComponent = () => {
   const onPostArticle: React.MouseEventHandler<HTMLButtonElement> = () => {
     const newId = uuidv4();
     const articles = localStorage.getItem('smileGate');
-    if (articles === null) {
-      localStorage.setItem(
-        'smileGate',
-        JSON.stringify([
-          ...articleList,
-          {
-            id: uuidv4(),
-            title: title,
-            content: content,
-          },
-        ]),
-      );
+
+    if (location.state !== undefined) {
+      console.log(title, content);
+      if (articles !== null) {
+        const current = JSON.parse(articles);
+        for (let i = 0; i < current.length; i++) {
+          if (current[i].id === location.state.id) {
+            current[i].title = title;
+            current[i].content = content;
+          }
+        }
+        console.log(current);
+        localStorage.setItem('smileGate', JSON.stringify(current));
+      }
+      history.push(`/list:${location.state.id}`);
     } else {
-      const addedResult = JSON.parse(articles);
-      localStorage.setItem(
-        'smileGate',
-        JSON.stringify([
-          ...addedResult,
-          {
-            id: newId,
-            title: title,
-            content: content,
-          },
-        ]),
-      );
+      if (articles === null) {
+        localStorage.setItem(
+          'smileGate',
+          JSON.stringify([
+            ...articleList,
+            {
+              id: uuidv4(),
+              title: title,
+              content: content,
+            },
+          ]),
+        );
+      } else {
+        const addedResult = JSON.parse(articles);
+        localStorage.setItem(
+          'smileGate',
+          JSON.stringify([
+            ...addedResult,
+            {
+              id: newId,
+              title: title,
+              content: content,
+            },
+          ]),
+        );
+      }
+      history.push(`/list:${newId}`);
     }
-    history.push(`/list?${newId}`);
   };
+
+  useEffect(() => {
+    if (location.state !== undefined) {
+      setTitle(location.state.title);
+      setContent(location.state.content);
+    }
+  }, [location.state]);
 
   return (
     <>
@@ -78,17 +104,33 @@ const ArticleCreate: FunctionComponent = () => {
         icon="pencil"
         size="large"
         placeholder="Input title..."
+        defaultValue={title}
       />
-      <Editor
-        initialValue=""
-        previewStyle="vertical"
-        height="600px"
-        initialEditType="markdown"
-        useCommandShortcut
-        onChange={onChangeContent}
-        ref={editorRef}
-        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-      />
+      {location.state !== undefined ? (
+        content && (
+          <Editor
+            initialValue={content}
+            previewStyle="vertical"
+            height="600px"
+            initialEditType="markdown"
+            useCommandShortcut
+            onChange={onChangeContent}
+            ref={editorRef}
+            plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+          />
+        )
+      ) : (
+        <Editor
+          initialValue=""
+          previewStyle="vertical"
+          height="600px"
+          initialEditType="markdown"
+          useCommandShortcut
+          onChange={onChangeContent}
+          ref={editorRef}
+          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        />
+      )}
       <Button.Group style={{ float: 'right', margin: '1rem 0 0.1rem 0' }}>
         <Button onClick={onCancelPosting}>Cancel</Button>
         <Button.Or />
